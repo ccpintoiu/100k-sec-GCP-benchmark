@@ -229,6 +229,14 @@ done
 
 15k users and ramp up: 45 user. check you also have 144 workers registered. hit run:
 
+<img width="826" height="220" alt="image" src="https://github.com/user-attachments/assets/7f3b91f3-ab2f-4c14-8316-4fed60eb683f" />
+
+7. Monitor Clour Run instances and BQ, check graph from Locust UI: 
+
+<img width="1547" height="938" alt="image" src="https://github.com/user-attachments/assets/be50bfc3-d2d3-43fc-8a85-116ad7ce41ca" />
+
+
+
 
 
 
