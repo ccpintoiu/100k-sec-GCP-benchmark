@@ -229,6 +229,11 @@ done
 
 15k users and ramp up: 45 user. check you also have 144 workers registered. hit run:
 
+Access Locust UI: Open a web browser to http://<MASTER_VM_EXTERNAL_IP>:8089.
+
+Automating Locust Deployment (Advanced):
+For more repeatable tests, consider using tools like Terraform or Deployment Manager to script the creation of the GCE VMs and the startup scripts to run Locust. You could also containerize Locust and run it on GKE.
+
 <img width="826" height="220" alt="image" src="https://github.com/user-attachments/assets/7f3b91f3-ab2f-4c14-8316-4fed60eb683f" />
 
 7. Monitor Clour Run instances and BQ, check graph from Locust UI: 
