@@ -1,0 +1,10 @@
+{
+  "application_key": "enterprise-mobile-app",
+  "trace_uuid": "8f3a2b11-9cde-4e71-b204-f5291a119e02",
+  "occurrence_ts_str": "2026-03-10T10:15:30Z",
+  "internal_member_id": "user-8842-premium",
+  "anonymous_device_id": "did-660-f47ac10b-58cc",
+  "payload_attributes": "{\"detection_type\": \"hooking\", \"severity\": \"high\", \"flags\": [\"frida\", \"re_tool\"]}",
+  "subscriber_traits": "{\"platform\": \"insertsOS\", \"os_version\": \"14\", \"manufacturer\": \"whatev\", \"tier\": \"gold\"}",
+  "record_loaded_at": "2026-03-10T10:16:00Z"
+}
