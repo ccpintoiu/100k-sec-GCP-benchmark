@@ -189,7 +189,7 @@ C. Locust setup:
 
 to send ~100k/sec to GLB we need 10 VM with e2-standard-16 (16 vCPUs, 64 GB Memory)
 
-install locust, one node will be Master and the rest workers. We need to start the worker process for each core, 144 in total:
+1. install locust, one node will be Master and the rest workers. We need to start the worker process for each core, 144 in total:
 
 sudo apt update
 sudo apt install -y python3-pip python3-venv
@@ -199,8 +199,35 @@ source env/bin/activate
 pip install locust
 pip install google-auth google-auth-httplib2 google-auth-oauthlib
 
-create locally locustfile.py and payload file test.json: 
+2. create locally locustfile.py and payload file test.json
 
+3. add the firewall rule to let UI access on the outside + plus fw rule to let worker connect to master
+
+gcloud compute firewall-rules create locust-master-worker \
+  --direction=INGRESS \
+  --priority=1000 \
+  --network=base \
+  --action=ALLOW \
+  --rules=tcp:5557,tcp:5558 \
+  --source-tags=locust-worker \
+  --target-tags=locust-master --project=${PROJECT_ID}
+
+
+4. start Master and get to UI: 
+locust -f locustfile.py --master --host http://LB_IP:80
+
+5. start workers on each thread:
+
+vi 16.sh
+chmod +x 16.sh
+
+for i in {1..16}; do
+    locust -f locustfile.py --worker --master-host=IP_internal --host http://LB_IP:80 &
+done
+
+6. start Locust with:
+
+15k users and ramp up: 45 user. check you also have 144 workers registered. hit run:
 
 
 
