@@ -1,0 +1,35 @@
+Target Architecture:
+
+Global External HTTP(S) Load Balancer (GLB): To receive incoming messages.
+Cloud Run: A fully managed service to host a simple application. This application will receive HTTP POST requests from the GLB, and publish the message body (the test.json content) to a Pub/Sub topic. We use Cloud Run for its simplicity and auto-scaling capabilities for this type of workload.
+Pub/Sub: A topic to receive messages from the Cloud Run service.
+BigQuery Subscription: A push subscription on the Pub/Sub topic that writes messages directly to a BigQuery table using the Storage Write API.
+
+
+Benchmark Setup Steps:
+
+1. Select Region: Choose a large GCP region (e.g., europe-west1 or us-central1) for optimal default quotas.
+2. Setup BigQuery:
+Create a Dataset.
+Create a BigQuery table. The schema should be derived from the test.json structure. Consider partitioning the table by an extracted timestamp and clustering by fields like data.app_id and data.agent_id to optimize query performance and costs.
+3. Setup Pub/Sub:
+Create a Pub/Sub Topic.
+Create a BigQuery Subscription on the topic, configuring it to write to the BigQuery table created above. Ensure the subscription settings match the table schema (e.g., by enabling use_table_schema).
+4. Deploy Cloud Run Service:
+Develop a lightweight containerized application (e.g., using Python, or Go) that exposes an HTTP endpoint.
+This endpoint will receive the POST request, take the request body, and publish it as a message to the Pub/Sub Topic.
+Deploy to Cloud Run in the same region, with appropriate CPU/memory settings and autoscaling enabled.
+5. Configure Load Balancer:
+Setup a Global External HTTP(S) Load Balancer.
+Create a serverless network endpoint group (NEG) for the Cloud Run service.
+Configure the GLB backend service to use the serverless NEG.
+6. Generate Load:
+Use a distributed load testing tool (e.g., Locust, JMeter, or custom scripts running on a group of Compute Engine VMs) to send 100,000 HTTP POST requests per second to the GLBs IP address. 
+Each request should contain the test.json payload.
+7. Monitor:
+Use Cloud Monitoring dashboards to observe:
+  GLB request counts and latency.
+  Cloud Run instance counts, CPU/memory usage, request latency.
+  Pub/Sub publish throughput and BigQuery subscription throughput.
+  BigQuery Storage Write API usage and any potential errors.
+  Query BigQuery to confirm the number of rows ingested matches the expected volume.
